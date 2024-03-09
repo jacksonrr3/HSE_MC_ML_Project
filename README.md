@@ -4,8 +4,9 @@
 ## Requirments
 
 Python3
+Poetry
 
-## Setup
+## Setup and run manualy
 
 All commands run from project folder. Operation system - Ubuntu 20. 
 
@@ -21,6 +22,16 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 ```pip install -r requirements.txt```
 
-## Run Demo
+4. Run demo
 
-```python ./src/demo.py ```
+```python ./demo.py ```
+
+## Build and install with Poetry
+
+1. Build package from source code
+
+```python3 –m build .```
+
+2. Install from gir repo (week_1 branch)
+
+```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project@1_week```
