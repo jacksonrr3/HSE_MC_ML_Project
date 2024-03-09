@@ -24,7 +24,7 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 4. Run demo
 
-```python ./demo.py ```
+```python ./demo/__init__.py ```
 
 ## Build and install with Poetry
 
