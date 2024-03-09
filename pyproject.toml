@@ -7,9 +7,11 @@ license = "free"
 readme = "README.md"
 packages = [
     { include = "common" },
+    { include = "demo" },
 ]
 include = [
-    { path = "model", format = ["sdist", "wheel"] }
+    { path = "model", format = ["sdist", "wheel"] },
+    { path = "demo.mp4", format = ["sdist", "wheel"] }
 ]
 
 [tool.poetry.dependencies]
@@ -19,7 +21,7 @@ torch = "2.2.1"
 openvino = "2023.3.0"
 
 [tool.poetry.scripts]
-demo = "demo:camera_demo"
+demo = "demo.demo:run_demo"
 
 [build-system]
 requires = ["poetry-core"]

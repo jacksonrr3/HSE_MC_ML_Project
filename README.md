@@ -1,5 +1,8 @@
 # HSE_MC_ML_Project
 
+## Description
+
+Application runs video from 'data/demo.mp4' folder and detect faces. 
 
 ## Requirments
 
@@ -24,7 +27,7 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 4. Run demo
 
-```python ./demo/__init__.py ```
+```python ./demo/demo.py ```
 
 ## Build and install with Poetry
 
