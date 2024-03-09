@@ -1,6 +1,10 @@
 # HSE_MC_ML_Project
 
 
+## Requirments
+
+Python3
+
 ## Setup
 
 All commands run from project folder. Operation system - Ubuntu 20. 
@@ -19,4 +23,4 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 ## Run Demo
 
-```python ./demo.py ```
+```python ./src/demo.py ```
