@@ -7,7 +7,7 @@ Application runs video from 'data/demo.mp4' folder and detect faces.
 ## Requirments
 
 Python3
-Poetry
+Poetry 
 
 ## Setup and run manualy
 
@@ -29,12 +29,20 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 ```python ./demo/demo.py ```
 
-## Build and install with Poetry
 
-1. Build package from source code
+## Build package from source code
 
 ```python3 –m build .```
 
-2. Install from gir repo (week_1 branch)
+or via poetry
+
+```poetry build```
+
+
+## Install from github and run
+
 
 ```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project@1_week```
+
+
+```demo```

@@ -11,7 +11,7 @@ packages = [
 ]
 include = [
     { path = "model", format = ["sdist", "wheel"] },
-    { path = "demo.mp4", format = ["sdist", "wheel"] }
+    { path = "data", format = ["sdist", "wheel"] }
 ]
 
 [tool.poetry.dependencies]
