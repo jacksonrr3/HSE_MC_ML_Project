@@ -1,5 +1,6 @@
 
 import common
+from common import exp 
 import numpy as np
 import torch
 import torch.nn.functional as F

@@ -5,15 +5,21 @@ description = "Machine Learning in CV course"
 authors = ["Evgeniy Zaborshchikov"]
 license = "free"
 readme = "README.md"
+packages = [
+    { include = "common" },
+]
+include = [
+    { path = "model", format = ["sdist", "wheel"] }
+]
 
 [tool.poetry.dependencies]
-python = "3.10"
+python = "^3.10"
 opencv-python = "4.9.0.80"
 torch = "2.2.1"
 openvino = "2023.3.0"
 
 [tool.poetry.scripts]
-demo = "demo:camera_demo"
+demo = "demo.demo:camera_demo"
 
 [build-system]
 requires = ["poetry-core"]
