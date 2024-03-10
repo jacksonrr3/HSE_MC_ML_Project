@@ -22,6 +22,31 @@ openvino = "2023.3.0"
 [tool.poetry.scripts]
 demo = "src.demo.demo:run_demo"
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
