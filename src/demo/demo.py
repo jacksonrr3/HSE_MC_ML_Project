@@ -6,12 +6,12 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-import src.common as common
+# try:
+#     from armv7l.openvino.inference_engine import IENetwork, IEPlugin
+# except:
+from openvino.inference_engine import IECore
 
-try:
-    from armv7l.openvino.inference_engine import IENetwork, IEPlugin
-except:
-    from openvino.inference_engine import IECore
+import src.common as common
 
 
 def nms(objs, iou=0.5):

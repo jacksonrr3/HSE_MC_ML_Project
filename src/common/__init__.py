@@ -255,7 +255,7 @@ def drawbbox(
     text = f"{bbox.score:.2f}"
     x, y, r, b = intv(bbox.box)
     w = r - x + 1
-    h = b - y + 1
+    # h = b - y + 1
 
     cv2.rectangle(image, (x, y, r - x + 1, b - y + 1), color, thickness, 16)
 

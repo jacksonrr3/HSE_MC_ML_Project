@@ -56,3 +56,7 @@ or via poetry
 ```black .```
 ```isort .```
 
+### Run code linting tools
+
+```flake8 .```
+
