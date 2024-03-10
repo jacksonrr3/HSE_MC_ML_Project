@@ -6,8 +6,7 @@ authors = ["Evgeniy Zaborshchikov"]
 license = "free"
 readme = "README.md"
 packages = [
-    { include = "common" },
-    { include = "demo" },
+    { include = "src" }
 ]
 include = [
     { path = "model", format = ["sdist", "wheel"] },
@@ -21,7 +20,7 @@ torch = "2.2.1"
 openvino = "2023.3.0"
 
 [tool.poetry.scripts]
-demo = "demo.demo:run_demo"
+demo = "src.demo.demo:run_demo"
 
 [build-system]
 requires = ["poetry-core"]

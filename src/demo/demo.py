@@ -1,5 +1,5 @@
 
-import common
+import src.common as common
 import numpy as np
 import torch
 import torch.nn.functional as F

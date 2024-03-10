@@ -27,7 +27,7 @@ All commands run from project folder. Operation system - Ubuntu 20.
 
 4. Run demo
 
-```python ./demo/demo.py ```
+```python ./src/demo/demo.py ```
 
 
 ## Build package from source code
