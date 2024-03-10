@@ -1,10 +1,12 @@
-import src.common as common
+import os
+from argparse import ArgumentParser
+
+import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
-import cv2
-import os
-from argparse import ArgumentParser
+
+import src.common as common
 
 try:
     from armv7l.openvino.inference_engine import IENetwork, IEPlugin

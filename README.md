@@ -4,10 +4,11 @@
 
 Application runs video from 'data/demo.mp4' folder and detect faces. 
 
-## Requirments
+## Requirments for local development
 
-Python3
-Poetry 
+install Python3
+install Poetry
+
 
 ## Setup and run manualy
 
@@ -46,3 +47,12 @@ or via poetry
 
 
 ```demo```
+
+
+## Local development
+
+### Run style linting tools
+
+```black .```
+```isort .```
+
