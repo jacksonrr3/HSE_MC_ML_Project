@@ -2,7 +2,7 @@
 
 ## Description
 
-Application runs video from 'data/demo.mp4' folder and detect faces. 
+Application runs video from 'data/demo.mp4' folder and detect faces.
 
 ## Requirments for local development
 
@@ -12,7 +12,7 @@ install Poetry
 
 ## Setup and run manualy
 
-All commands run from project folder. Operation system - Ubuntu 20. 
+All commands run from project folder. Operation system - Ubuntu 20.
 
 1. Create Python virtual environment
 
@@ -60,3 +60,7 @@ or via poetry
 
 ```flake8 .```
 
+### Pre-commit hooks is run every commit auto
+Run it malualy:
+
+```pre-commit run --all-files```
