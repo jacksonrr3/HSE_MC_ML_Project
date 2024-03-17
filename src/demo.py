@@ -54,8 +54,7 @@ def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
     landmark = torch.from_numpy(landmark).clone()
 
     hm_pool = F.max_pool2d(hm, 3, 1, 1)
-    scores, indices = ((hm == hm_pool).float() *
-                       hm).view(1, -1).cpu().topk(1000)
+    scores, indices = ((hm == hm_pool).float() * hm).view(1, -1).cpu().topk(1000)
     hm_height, hm_width = hm.shape[2:]
 
     scores = scores.squeeze()
@@ -79,8 +78,7 @@ def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
         x5y5 = landmark[:, cy, cx]
         x5y5 = (common.exp(x5y5 * 4) + ([cx] * 5 + [cy] * 5)) * stride
         box_landmark = list(zip(x5y5[:5], x5y5[5:]))
-        objs.append(common.BBox(
-            0, xyrb=xyrb, score=score, landmark=box_landmark))
+        objs.append(common.BBox(0, xyrb=xyrb, score=score, landmark=box_landmark))
     return nms(objs, iou=nms_iou)
 
 
@@ -95,7 +93,7 @@ def process_video(exec_net, input_blob):
         img = cv2.resize(frame, (640, 480))
         frame = img.copy()
         # img = ((img / 255.0 - mean) / std).astype(np.float32)
-        img = img[np.newaxis, :, :, :]   # Batch size axis add
+        img = img[np.newaxis, :, :, :]  # Batch size axis add
         img = img.transpose((0, 3, 1, 2))  # NHWC to NCHW
         objs = detect(exec_net, input_blob, img)
 
@@ -117,7 +115,7 @@ def process_img(exec_net, input_blob):
     img = cv2.imread("data/Marty&Brown.png")
     img = cv2.resize(img, (640, 480))
     frame = img.copy()
-    img = img[np.newaxis, :, :, :]   # Batch size axis add
+    img = img[np.newaxis, :, :, :]  # Batch size axis add
     img = img.transpose((0, 3, 1, 2))  # NHWC to NCHW
     objs = detect(exec_net, input_blob, img)
     for obj in objs:
@@ -137,9 +135,10 @@ def run_demo():
     ie = IECore()
     net = ie.read_network(model=model_xml, weights=model_bin)
     input_blob = next(iter(net.input_info))
-    exec_net = ie.load_network(network=net, device_name='CPU')
+    exec_net = ie.load_network(network=net, device_name="CPU")
 
     process_img(exec_net, input_blob)
+
 
 if __name__ == "__main__":
     print("Run!!!")
