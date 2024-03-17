@@ -14,7 +14,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "3.10"
+python = "^3.10"
 opencv-python = "4.9.0.80"
 torch = "2.2.1"
 openvino = "2023.3.0"
