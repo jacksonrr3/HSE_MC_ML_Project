@@ -16,7 +16,7 @@ or via poetry
 ## Install from github and run
 
 
-```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project@1_week```
+```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project.git@1_week```
 
 
 ```demo```
