@@ -1,8 +1,10 @@
 # HSE_MC_ML_Project
 
+
 ## Description
 
 Application detect faces at 'data/Marty&Brown.png' and shows it. 
+
 
 ## Build package from source code
 
@@ -15,8 +17,8 @@ or via poetry
 
 ## Install from github and run
 
-
 ```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project.git@1_week```
 
-
 ```demo```
+
+Will show demo picture with borders around detected faces.
