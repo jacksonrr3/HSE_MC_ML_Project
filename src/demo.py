@@ -3,13 +3,14 @@ from argparse import ArgumentParser
 
 import cv2
 import numpy as np
-import torch
-import torch.nn.functional as F
 
 # try:
 #     from armv7l.openvino.inference_engine import IENetwork, IEPlugin
 # except:
-from openvino.inference_engine import IECore
+# from openvino.inference_engine import IECore
+import openvino.runtime as ov
+import torch
+import torch.nn.functional as F
 
 import src.common as common
 
@@ -34,9 +35,11 @@ def nms(objs, iou=0.5):
     return keep
 
 
-def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
-
-    outputs = exec_net.infer(inputs={input_blob: image})
+def detect(infer_request, image, threshold=0.4, nms_iou=0.5):
+    # outputs = compiled_model.infer_new_request(image)
+    outputs = infer_request.infer(image)
+    # outputs = compiled_model.infer(inputs={input_blob: image})
+    # outputs = exec_net.infer(inputs={input_blob: image})
     # print('outputs:', outputs)
     # print('outputs[\'Sigmoid_526\'].shape:', outputs['Sigmoid_526'].shape)
     # print('outputs[\'Exp_527\'].shape:', outputs['Exp_527'].shape)
@@ -111,33 +114,33 @@ def process_video(exec_net, input_blob):
     cv2.destroyAllWindows()
 
 
-def process_img(exec_net, input_blob):
-    img = cv2.imread("data/Marty&Brown.png")
+def get_model(model_xml):
+    model_bin = os.path.splitext(model_xml)[0] + ".bin"
+    ie = ov.Core()
+    model = ie.read_model(model=model_xml, weights=model_bin)
+    compiled_model = ie.compile_model(model, "CPU")
+    return compiled_model.create_infer_request()
+
+
+def detect_faces(img_path):
+    infer_request = get_model("model/dbface.xml")
+
+    img = cv2.imread(img_path)
     img = cv2.resize(img, (640, 480))
     frame = img.copy()
     img = img[np.newaxis, :, :, :]  # Batch size axis add
     img = img.transpose((0, 3, 1, 2))  # NHWC to NCHW
-    objs = detect(exec_net, input_blob, img)
+    objs = detect(infer_request, img)
     for obj in objs:
         common.drawbbox(frame, obj)
-    cv2.imshow("demo DBFace", frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    return frame
 
 
 def run_demo():
-
-    # args = build_argparser().parse_args()
-    # model_xml = "openvino/480x640/FP32/dbface_mbnv3_480x640_opt.xml" #<--- CPU
-    model_xml = "model/dbface.xml"
-    # model_xml = "openvino/480x640/FP16/dbface.xml" #<--- MYRIAD
-    model_bin = os.path.splitext(model_xml)[0] + ".bin"
-    ie = IECore()
-    net = ie.read_network(model=model_xml, weights=model_bin)
-    input_blob = next(iter(net.input_info))
-    exec_net = ie.load_network(network=net, device_name="CPU")
-
-    process_img(exec_net, input_blob)
+    frame = detect_faces("data/Marty&Brown.png")
+    cv2.imshow("demo DBFace", frame)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
