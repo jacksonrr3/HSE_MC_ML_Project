@@ -43,3 +43,8 @@ Run it malualy:
 
 ```pre-commit run --all-files```
 Will show demo picture with borders around detected faces.
+
+### Tests
+
+run tests:
+```pytest ./tests```
