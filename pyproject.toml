@@ -20,7 +20,7 @@ torch = "2.2.1"
 openvino = "2023.3.0"
 
 [tool.poetry.scripts]
-demo = "src.demo.demo:run_demo"
+demo = "src.demo:run_demo"
 
 [build-system]
 requires = ["poetry-core"]
