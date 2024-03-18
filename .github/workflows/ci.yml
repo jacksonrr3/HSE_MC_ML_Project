@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: poetry install
     - name: Run PyTest
-      run: pytest .
+      run: poetry run pytest .
     - name: Build
       run: poetry build
     - name: Archive production artifacts
