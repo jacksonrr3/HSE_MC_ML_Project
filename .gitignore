@@ -2,3 +2,4 @@ __pycache__
 .dbface_env
 dist
 .venv
+.pytest_cache
