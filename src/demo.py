@@ -1,15 +1,18 @@
-
-import src.common as common
-import numpy as np
-import torch
-import torch.nn.functional as F
-import cv2
 import os
 from argparse import ArgumentParser
-try:
-    from armv7l.openvino.inference_engine import IENetwork, IEPlugin
-except:
-    from openvino.inference_engine import IECore
+
+import cv2
+import numpy as np
+
+# try:
+#     from armv7l.openvino.inference_engine import IENetwork, IEPlugin
+# except:
+# from openvino.inference_engine import IECore
+import openvino.runtime as ov
+import torch
+import torch.nn.functional as F
+
+import src.common as common
 
 
 def nms(objs, iou=0.5):
@@ -32,14 +35,16 @@ def nms(objs, iou=0.5):
     return keep
 
 
-def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
-
-    outputs = exec_net.infer(inputs={input_blob: image})
+def detect(infer_request, image, threshold=0.4, nms_iou=0.5):
+    # outputs = compiled_model.infer_new_request(image)
+    outputs = infer_request.infer(image)
+    # outputs = compiled_model.infer(inputs={input_blob: image})
+    # outputs = exec_net.infer(inputs={input_blob: image})
     # print('outputs:', outputs)
     # print('outputs[\'Sigmoid_526\'].shape:', outputs['Sigmoid_526'].shape)
     # print('outputs[\'Exp_527\'].shape:', outputs['Exp_527'].shape)
     # print('outputs[\'Conv_525\'].shape:', outputs['Conv_525'].shape)
-    hm, box, landmark = outputs['Sigmoid_526'], outputs['Exp_527'], outputs['Conv_525']
+    hm, box, landmark = outputs["Sigmoid_526"], outputs["Exp_527"], outputs["Conv_525"]
     # hm, box, landmark = outputs['1028'], outputs['1029'], outputs['1027']
 
     # print('outputs:', outputs)
@@ -52,8 +57,7 @@ def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
     landmark = torch.from_numpy(landmark).clone()
 
     hm_pool = F.max_pool2d(hm, 3, 1, 1)
-    scores, indices = ((hm == hm_pool).float() *
-                       hm).view(1, -1).cpu().topk(1000)
+    scores, indices = ((hm == hm_pool).float() * hm).view(1, -1).cpu().topk(1000)
     hm_height, hm_width = hm.shape[2:]
 
     scores = scores.squeeze()
@@ -75,10 +79,9 @@ def detect(exec_net, input_blob, image, threshold=0.4, nms_iou=0.5):
         x, y, r, b = box[:, cy, cx]
         xyrb = (np.array([cx, cy, cx, cy]) + [-x, -y, r, b]) * stride
         x5y5 = landmark[:, cy, cx]
-        x5y5 = (common.exp(x5y5 * 4) + ([cx]*5 + [cy]*5)) * stride
+        x5y5 = (common.exp(x5y5 * 4) + ([cx] * 5 + [cy] * 5)) * stride
         box_landmark = list(zip(x5y5[:5], x5y5[5:]))
-        objs.append(common.BBox(
-            0, xyrb=xyrb, score=score, landmark=box_landmark))
+        objs.append(common.BBox(0, xyrb=xyrb, score=score, landmark=box_landmark))
     return nms(objs, iou=nms_iou)
 
 
@@ -93,7 +96,7 @@ def process_video(exec_net, input_blob):
         img = cv2.resize(frame, (640, 480))
         frame = img.copy()
         # img = ((img / 255.0 - mean) / std).astype(np.float32)
-        img = img[np.newaxis, :, :, :]   # Batch size axis add
+        img = img[np.newaxis, :, :, :]  # Batch size axis add
         img = img.transpose((0, 3, 1, 2))  # NHWC to NCHW
         objs = detect(exec_net, input_blob, img)
 
@@ -102,7 +105,7 @@ def process_video(exec_net, input_blob):
 
         cv2.imshow("demo DBFace", frame)
         key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
+        if key == ord("q"):
             break
 
         ok, frame = cap.read()
@@ -111,33 +114,35 @@ def process_video(exec_net, input_blob):
     cv2.destroyAllWindows()
 
 
-def process_img(exec_net, input_blob):
-    img = cv2.imread("data/Marty&Brown.png")
+def get_model(model_xml):
+    model_bin = os.path.splitext(model_xml)[0] + ".bin"
+    ie = ov.Core()
+    model = ie.read_model(model=model_xml, weights=model_bin)
+    compiled_model = ie.compile_model(model, "CPU")
+    return compiled_model.create_infer_request()
+
+
+def detect_faces(img_path):
+    infer_request = get_model("model/dbface.xml")
+
+    img = cv2.imread(img_path)
     img = cv2.resize(img, (640, 480))
     frame = img.copy()
-    img = img[np.newaxis, :, :, :]   # Batch size axis add
+    img = img[np.newaxis, :, :, :]  # Batch size axis add
     img = img.transpose((0, 3, 1, 2))  # NHWC to NCHW
-    objs = detect(exec_net, input_blob, img)
+    objs = detect(infer_request, img)
     for obj in objs:
         common.drawbbox(frame, obj)
+    return frame
+
+
+def run_demo():
+    frame = detect_faces("data/Marty&Brown.png")
     cv2.imshow("demo DBFace", frame)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
-def run_demo():
-
-    # args = build_argparser().parse_args()
-    # model_xml = "openvino/480x640/FP32/dbface_mbnv3_480x640_opt.xml" #<--- CPU
-    model_xml = "model/dbface.xml"
-    # model_xml = "openvino/480x640/FP16/dbface.xml" #<--- MYRIAD
-    model_bin = os.path.splitext(model_xml)[0] + ".bin"
-    ie = IECore()
-    net = ie.read_network(model=model_xml, weights=model_bin)
-    input_blob = next(iter(net.input_info))
-    exec_net = ie.load_network(network=net, device_name='CPU')
-
-    process_img(exec_net, input_blob)
-
 if __name__ == "__main__":
+    print("Run!!!")
     run_demo()

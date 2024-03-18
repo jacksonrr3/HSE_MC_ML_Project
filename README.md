@@ -3,7 +3,7 @@
 
 ## Description
 
-Application detect faces at 'data/Marty&Brown.png' and shows it. 
+Application detect faces at 'data/Marty&Brown.png' and shows it.
 
 
 ## Build package from source code
@@ -21,4 +21,30 @@ or via poetry
 
 ```demo```
 
+
+## Local development
+
+### Run style linting tools
+
+```black .```
+```isort .```
+
+### Run code linting tools
+
+```flake8 .```
+
+### Pre-commit hooks is run every commit auto
+
+Run to set up the git hook scripts
+
+```pre-commit install```
+
+Run it malualy:
+
+```pre-commit run --all-files```
 Will show demo picture with borders around detected faces.
+
+### Tests
+
+run tests:
+```pytest ./tests```
