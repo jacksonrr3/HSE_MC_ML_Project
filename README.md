@@ -3,7 +3,15 @@
 
 ## Description
 
-Application detect faces at 'data/Marty&Brown.png' and shows it. 
+Application detect faces at 'data/Marty&Brown.png' and shows it.
+
+## Setup project
+
+Install poetry (https://python-poetry.org/docs/#installation)
+
+Install dependencies
+
+```poetry install```
 
 
 ## Build package from source code
