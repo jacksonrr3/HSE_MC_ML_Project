@@ -9,6 +9,7 @@ import numpy as np
 # except:
 # from openvino.inference_engine import IECore
 import openvino.runtime as ov
+import streamlit as st
 import torch
 import torch.nn.functional as F
 
@@ -122,10 +123,9 @@ def get_model(model_xml):
     return compiled_model.create_infer_request()
 
 
-def detect_faces(img_path):
+def detect_faces(img):
     infer_request = get_model("model/dbface.xml")
 
-    img = cv2.imread(img_path)
     img = cv2.resize(img, (640, 480))
     frame = img.copy()
     img = img[np.newaxis, :, :, :]  # Batch size axis add
@@ -137,12 +137,18 @@ def detect_faces(img_path):
 
 
 def run_demo():
-    frame = detect_faces("data/Marty&Brown.png")
-    cv2.imshow("demo DBFace", frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    st.header("ML progect")
+    uploaded_file = st.file_uploader(
+        "Choose image file", type=["png", "jpg"], help="only 'png' and 'jpg' enabled"
+    )
+
+    if uploaded_file is not None:
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        opencv_image = cv2.imdecode(file_bytes, 1)
+        frame = detect_faces(opencv_image)
+        st.subheader("Detected faces")
+        st.image(frame)
 
 
 if __name__ == "__main__":
-    print("Run!!!")
     run_demo()
