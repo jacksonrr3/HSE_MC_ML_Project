@@ -26,7 +26,7 @@ or via poetry
 
 ## Install from github and run
 
-```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project.git@1_week```
+```pip3 install git+https://github.com/jacksonrr3/HSE_MC_ML_Project.git```
 
 ```demo```
 
@@ -38,9 +38,11 @@ or via poetry
 ```black .```
 ```isort .```
 
+
 ### Run code linting tools
 
 ```flake8 .```
+
 
 ### Pre-commit hooks is run every commit auto
 
@@ -53,7 +55,13 @@ Run it malualy:
 ```pre-commit run --all-files```
 Will show demo picture with borders around detected faces.
 
+
 ### Tests
 
 run tests:
 ```pytest ./tests```
+
+
+## Run application
+
+```streamlit run app.py```

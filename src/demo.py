@@ -137,18 +137,13 @@ def detect_faces(img):
 
 
 def run_demo():
-    st.header("ML progect")
-    uploaded_file = st.file_uploader(
-        "Choose image file", type=["png", "jpg"], help="only 'png' and 'jpg' enabled"
-    )
-
-    if uploaded_file is not None:
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        opencv_image = cv2.imdecode(file_bytes, 1)
-        frame = detect_faces(opencv_image)
-        st.subheader("Detected faces")
-        st.image(frame)
+    img = cv2.imread("data/demo.png")
+    frame = detect_faces(img)
+    cv2.imshow("demo DBFace", frame)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
+    print("Demo run!!!")
     run_demo()
