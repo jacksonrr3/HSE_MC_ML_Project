@@ -20,12 +20,12 @@ def run_app():
 
     st.set_page_config(layout="wide", page_title="Image Background Remover")
 
-    st.header("Detect faces in your image")
-    st.write("### ML project")
+    st.header("HSE ML project: face detector")
+    st.write("---------------------------------------------------")
+    st.write("Try uploading an image to watch the faces detected.")
+    st.write("Full quality images can be downloaded from the sidebar.")
     st.write(
-        "Try uploading an image to watch the faces detected. "
-        + "Full quality images can be downloaded from the sidebar. "
-        + "This code is open source and available [here](https://github.com/jacksonrr3/HSE_MC_ML_Project)."
+        "This code is open source and available [here](https://github.com/jacksonrr3/HSE_MC_ML_Project)."
     )
     st.sidebar.write("## Upload and download :gear:")
     col1, col2 = st.columns(2)
