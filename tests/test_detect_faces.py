@@ -6,7 +6,8 @@ from src.demo import detect_faces
 
 
 def test_detect_faces():
-    result = detect_faces("tests/fixtures/test_input.png")
+    img = cv2.imread("tests/fixtures/test_input.png")
+    result = detect_faces(img)
     expected = cv2.imread("tests/fixtures/expected.png")
 
     assert np.array_equal(result, expected)
