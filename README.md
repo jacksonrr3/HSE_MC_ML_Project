@@ -65,3 +65,17 @@ run tests:
 ## Run application
 
 ```streamlit run app.py```
+
+## Run with Docker
+
+```docker build -t streamlit .```
+
+```docker run -p 8501:8501 streamlit```
+
+If all went well, you should see an output similar to the following:
+
+    docker run -p 8501:8501 streamlit
+
+    You can now view your Streamlit app in your browser.
+
+    URL: http://0.0.0.0:8501```
